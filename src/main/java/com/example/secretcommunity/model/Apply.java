@@ -27,10 +27,10 @@ public class Apply {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "target_community")
-    private Community targetCommunity;
+    private Community community;
 
-    @Column(name = "apply_day")
-    private LocalDateTime applyDay;
+    @Column(name = "apply_date")
+    private LocalDateTime applyDate;
 
     @Column(name = "state")
     private int state;

@@ -25,7 +25,7 @@ public class Board {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "community_id")
-    private Community communityId;
+    private Community community;
 
     @Column(name = "title")
     private String title;

@@ -28,12 +28,6 @@ public class SignController {
         return "sign/sign-in";
     }
 
-    @GetMapping("/home")
-    public String showHomePage(@AuthenticationPrincipal UserDetails user, Model model) {
-        model.addAttribute("user", user.getUsername());
-        return "home";
-    }
-
     @PostMapping("/sign-up-proc")
     public String getPostList(MemberDTO.SignUpRequestDTO signUpDTO) {
 

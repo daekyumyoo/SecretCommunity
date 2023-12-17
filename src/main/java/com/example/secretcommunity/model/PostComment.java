@@ -27,13 +27,13 @@ public class PostComment {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id")
-    private Post postId;
+    private Post post;
 
     @Column(name = "content")
     private String content;
 
-    @Column(name = "comment_day")
-    private LocalDateTime commentDay;
+    @Column(name = "comment_date")
+    private LocalDateTime commentDate;
 
     @Column(name = "step")
     private int step;

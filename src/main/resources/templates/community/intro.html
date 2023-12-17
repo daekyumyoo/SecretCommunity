@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 정보</title>
+
+    <!-- Bootstrap 스타일 시트 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .community-info {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* 추가적인 스타일을 원하면 여기에 추가하세요 */
+    </style>
+</head>
+<body>
+<div class="community-info">
+    <img th:src="${introData.getProfileImgPath()}" alt="커뮤니티 이미지">
+    <h1 th:text="${introData.getName()}"></h1>
+    <p>생성일: <span th:text="${introData.getCreateDate()}"></span></p>
+    <p th:if="${introData.getRule() == 0}" class="text-success">즉시가입</p>
+    <p th:if="${introData.getRule() == 1}" class="text-warning">승인대기</p>
+    <p th:text="${introData.getDescription()}"></p>
+</div>
+<!-- Bootstrap 스크립트 추가 -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
