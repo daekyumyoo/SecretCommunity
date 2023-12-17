@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa; /* 연한 회색 계열 */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff; /* 흰색 */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-width: 100%;
+            text-align: center;
+            color: #495057; /* 어두운 회색 계열 */
+        }
+
+        h2 {
+            color: #007bff; /* 파란색 */
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #495057; /* 어두운 회색 계열 */
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ced4da; /* 연한 회색 계열 */
+            border-radius: 5px;
+            font-size: 14px;
+            color: #495057; /* 어두운 회색 계열 */
+        }
+
+        button {
+            background-color: #007bff; /* 파란색 */
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* 진한 파란색 */
+        }
+
+        .signup-link {
+            color: #007bff; /* 파란색 */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<form action="/login-process" method="post">
+    <h2>로그인</h2>
+
+    <label for="username">아이디:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">로그인</button>
+    <p>계정이 없으신가요? <a href="/sign/sign-up" class="signup-link">회원가입</a></p>
+</form>
+
+</body>
+</html>
