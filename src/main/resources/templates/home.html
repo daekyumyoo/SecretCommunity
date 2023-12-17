@@ -2,10 +2,169 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인 페이지</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9; /* 연한 회색 계열 */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1a237e; /* 파란색 */
+            color: #fff;
+            padding: 20px;
+            text-align: right;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        .community-section {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .community-section > div {
+            width: 48%;
+        }
+
+        .community-section > section {
+            background-color: #fff; /* 흰색 */
+            margin: 10px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .community-section > section:hover {
+            transform: scale(1.02);
+        }
+
+        .community-box {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd; /* 연한 회색 계열 */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+
+        .community-box:hover {
+            transform: scale(1.02);
+        }
+
+        .community-box img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .community-box h3 {
+            color: #1a237e; /* 진한 파란색 */
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .community-box p {
+            color: #555; /* 중간 회색 계열 */
+            margin-bottom: 10px;
+        }
+
+        .search-bar {
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #1a237e; /* 진한 파란색 */
+            border-radius: 5px;
+            font-size: 14px;
+            color: #1a237e; /* 진한 파란색 */
+        }
+
+        .search-btn {
+            background-color: #1a237e; /* 진한 파란색 */
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
-메인입니다
-<td th:text="${user}"></td>
+
+<header>
+    <a href="/community/create">커뮤니티 생성</a>
+    <a href="/mypage">마이페이지</a>
+    <a href="/logout">로그아웃</a>
+</header>
+
+<div class="community-section">
+    <div>
+        <h2>내가 만든 커뮤니티</h2>
+        <section th:each="community : ${myCommunityList}">
+            <div class="community-box">
+                <img th:src="${community.getProfileImgPath}" alt="커뮤니티 이미지">
+                <h3 th:text="${community.name}">커뮤니티</h3>
+            </div>
+        </section>
+    </div>
+
+    <div>
+        <h2>내가 가입한 커뮤니티</h2>
+        <section th:each="community : ${joinCommunityList}">
+            <div class="community-box">
+                <img th:src="${community.getProfileImgPath}" alt="커뮤니티 이미지">
+                <h3 th:text="${community.name}">커뮤니티</h3>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="search-bar">
+    <input type="text" class="search-input" placeholder="커뮤니티 검색...">
+    <button class="search-btn">검색</button>
+</div>
+
+<section>
+    <h2>전체 커뮤니티 목록</h2>
+    <div th:each="community : ${allCommunityList}" class="community-box">
+        <img th:src="${community.getProfileImgPath()}" alt="커뮤니티 이미지">
+        <h3 th:text="${community.name}">커뮤니티</h3>
+    </div>
+</section>
+
 </body>
 </html>

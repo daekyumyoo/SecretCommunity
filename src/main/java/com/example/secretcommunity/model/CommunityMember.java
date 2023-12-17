@@ -23,11 +23,11 @@ public class CommunityMember {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "member_id")
-    private Member memberId;
+    private Member member;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "community_id")
-    private Community communityId;
+    private Community community;
 
     @Column(name = "join_date")
     private LocalDateTime joinDate;
