@@ -37,11 +37,11 @@ public class Member {
     @Column(name = "tel")
     private String tel;
 
-    @Column(name = "birth_day")
-    private LocalDate birthDay;
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
-    @Column(name = "join_day")
-    private LocalDateTime joinDay;
+    @Column(name = "join_date")
+    private LocalDateTime joinDate;
 
     @Column(name = "gender")
     private int gender;

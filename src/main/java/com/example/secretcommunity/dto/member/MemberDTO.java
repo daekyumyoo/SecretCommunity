@@ -28,9 +28,9 @@ public class MemberDTO {
 
         private String tel;
 
-        private LocalDate birthDay;
+        private LocalDate birthDate;
 
-        private LocalDateTime joinDay;
+        private LocalDateTime joinDate;
 
         private int gender;
 
@@ -54,7 +54,8 @@ public class MemberDTO {
         private String password;
 
     }
-        // 유저 권한
+
+    // 유저 권한
     public static class Role {
 
         // 일반 유저

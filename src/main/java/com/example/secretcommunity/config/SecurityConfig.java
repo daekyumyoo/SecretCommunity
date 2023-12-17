@@ -50,7 +50,7 @@ public class SecurityConfig {
                                 .usernameParameter("username") // 2번
                                 .passwordParameter("password") // 3번
                                 .loginProcessingUrl("/login-process") // 4번
-                                .defaultSuccessUrl("/sign/home", true) // 5번
+                                .defaultSuccessUrl("/home/", true) // 5번
                 )
                 .logout(logout -> logout
                         // 로그아웃 요청을 처리할 URL 설정
