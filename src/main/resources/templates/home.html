@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:objects="http://www.thymeleaf.org/extras/objects">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f9f9f9; /* 연한 회색 계열 */
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,7 +18,7 @@
         }
 
         header {
-            background-color: #1a237e; /* 파란색 */
+            background-color: #1a237e;
             color: #fff;
             padding: 20px;
             text-align: right;
@@ -37,23 +37,35 @@
             display: flex;
             justify-content: space-between;
             width: 90%;
-            max-width: 1200px;
+            max-width: 1500px;
             margin-top: 20px;
             margin-bottom: 20px;
         }
 
         .community-section > div {
-            width: 48%;
+            text-align: center;
+            width: 100%;
+            margin: 0 3%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 30px 20px 30px;
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .community-section > section {
-            background-color: #fff; /* 흰색 */
-            margin: 10px;
-            padding: 20px;
+            background-color: #fff;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
             transition: transform 0.3s;
+            width: 50%;
+            height: auto;
+            overflow-y: auto;
+            max-height: 500px;
         }
 
         .community-section > section:hover {
@@ -61,13 +73,16 @@
         }
 
         .community-box {
+            margin-left: -16px;
             width: 100%;
+            height: auto;
             padding: 15px;
-            border: 1px solid #ddd; /* 연한 회색 계열 */
+            border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 10px;
             transition: transform 0.3s;
+            cursor: pointer;
         }
 
         .community-box:hover {
@@ -83,13 +98,13 @@
         }
 
         .community-box h3 {
-            color: #1a237e; /* 진한 파란색 */
+            color: #1a237e;
             margin-bottom: 8px;
             font-size: 18px;
         }
 
         .community-box p {
-            color: #555; /* 중간 회색 계열 */
+            color: #555;
             margin-bottom: 10px;
         }
 
@@ -106,19 +121,38 @@
         .search-input {
             width: 70%;
             padding: 10px;
-            border: 1px solid #1a237e; /* 진한 파란색 */
+            border: 1px solid #1a237e;
             border-radius: 5px;
             font-size: 14px;
-            color: #1a237e; /* 진한 파란색 */
+            color: #1a237e;
         }
 
         .search-btn {
-            background-color: #1a237e; /* 진한 파란색 */
+            background-color: #1a237e;
             color: #fff;
             padding: 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+
+        /* 스크롤 스타일 */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #1a237e #f9f9f9;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #949be0;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background-color: #f9f9f9;
         }
 
     </style>
@@ -132,23 +166,27 @@
 </header>
 
 <div class="community-section">
-    <div>
+    <div class="custom-scrollbar">
         <h2>내가 만든 커뮤니티</h2>
         <section th:each="community : ${myCommunityList}">
-            <div class="community-box">
-                <img th:src="${community.getProfileImgPath}" alt="커뮤니티 이미지">
-                <h3 th:text="${community.name}">커뮤니티</h3>
-            </div>
+            <a th:href="@{'/community/intro/' + ${community.getId()}}">
+                <div class="community-box">
+                    <img th:src="'data:image/jpeg;base64,' + ${community.profileImgPath}" alt="커뮤니티 이미지">
+                    <h3 th:text="${community.name}">커뮤니티</h3>
+                </div>
+            </a>
         </section>
     </div>
 
-    <div>
+    <div class="custom-scrollbar">
         <h2>내가 가입한 커뮤니티</h2>
         <section th:each="community : ${joinCommunityList}">
-            <div class="community-box">
-                <img th:src="${community.getProfileImgPath}" alt="커뮤니티 이미지">
-                <h3 th:text="${community.name}">커뮤니티</h3>
-            </div>
+            <a th:href="@{'/community/intro/' + ${community.getId()}}">
+                <div class="community-box">
+                    <img th:src="'data:image/jpeg;base64,' + ${community.profileImgPath}" alt="커뮤니티 이미지">
+                    <h3 th:text="${community.name}">커뮤니티</h3>
+                </div>
+            </a>
         </section>
     </div>
 </div>
@@ -158,11 +196,15 @@
     <button class="search-btn">검색</button>
 </div>
 
-<section>
+<section class="custom-scrollbar">
     <h2>전체 커뮤니티 목록</h2>
     <div th:each="community : ${allCommunityList}" class="community-box">
-        <img th:src="${community.getProfileImgPath()}" alt="커뮤니티 이미지">
-        <h3 th:text="${community.name}">커뮤니티</h3>
+        <a th:href="@{'/community/intro/' + ${community.getId()}}">
+            <div>
+                <img th:src="'data:image/jpeg;base64,' + ${community.profileImgPath}" alt="커뮤니티 이미지">
+                <h3 th:text="${community.name}">커뮤니티</h3>
+            </div>
+        </a>
     </div>
 </section>
 

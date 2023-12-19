@@ -33,26 +33,91 @@
 
         h1 {
             color: #007bff;
-            font-size: 28px;
-            margin-bottom: 15px;
+            font-size: 32px;
+            margin-bottom: 20px;
         }
 
         p {
-            line-height: 1.8;
+            line-height: 1.6;
             margin-bottom: 15px;
         }
 
-        /* 추가적인 스타일을 원하면 여기에 추가하세요 */
+        .application-status {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .text-success {
+            color: #28a745;
+        }
+
+        .text-warning {
+            color: #ffc107;
+        }
+
+        .create-date {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .join-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .join-button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #495057;
+        }
+
+        /* 버튼을 오른쪽으로 정렬 */
+        .button-container {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
 <div class="community-info">
-    <img th:src="${introData.getProfileImgPath()}" alt="커뮤니티 이미지">
+    <img th:src="'data:image/jpeg;base64,' + ${introData.profileImgPath}" alt="커뮤니티 이미지">
     <h1 th:text="${introData.getName()}"></h1>
-    <p>생성일: <span th:text="${introData.getCreateDate()}"></span></p>
-    <p th:if="${introData.getRule() == 0}" class="text-success">즉시가입</p>
-    <p th:if="${introData.getRule() == 1}" class="text-warning">승인대기</p>
+    <p class="create-date">생성일: <span th:text="${introData.getCreateDate()}"></span></p>
+    <p class="application-status" th:if="${introData.getRule() == 0}">
+        가입신청 상태: <span class="text-success">즉시가입</span>
+    </p>
+    <p class="application-status" th:if="${introData.getRule() == 1}">
+        가입신청 상태: <span class="text-warning">승인대기</span>
+    </p>
     <p th:text="${introData.getDescription()}"></p>
+
+    <!-- 버튼을 오른쪽으로 정렬한 컨테이너 -->
+    <div class="button-container">
+        <!-- 가입하기 버튼 -->
+        <a th:if="${introData.communityMember == true}" href="#" class="join-button">입장하기</a>
+        <a th:if="${introData.communityMember == false}" href="#" class="join-button">가입하기</a>
+
+        <!-- 돌아가기 버튼 -->
+        <a href="#" class="back-button">돌아가기</a>
+    </div>
 </div>
 <!-- Bootstrap 스크립트 추가 -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

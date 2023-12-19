@@ -62,6 +62,8 @@ public class CommunityDTO {
 
         private String description;
 
+        private boolean communityMember;
+
     }
 
     // 가입 규칙

@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,6 +30,8 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
 
     private final CommunityMemberRepository communityMemberRepository;
+
+    private final FileEncryptionService fileEncryptionService;
 
     @Value("${file.path.community}")
     private String imageFilePath;
@@ -50,7 +52,7 @@ public class CommunityService {
         return file;
     }
 
-    public List<CommunityDTO.HomePageCommunityResponseDTO> getAllCommunity() {
+    public List<CommunityDTO.HomePageCommunityResponseDTO> getAllCommunity() throws IOException {
 
         List<Community> communities = communityRepository.findAllByState(CommunityDTO.State.ACTIVE);
         List<CommunityDTO.HomePageCommunityResponseDTO> allCommunityResponseDTOS = new ArrayList<>();
@@ -58,7 +60,7 @@ public class CommunityService {
             CommunityDTO.HomePageCommunityResponseDTO allCommunityResponseDTO = CommunityDTO.HomePageCommunityResponseDTO.builder()
                     .id(community.getId())
                     .name(community.getName())
-                    .profileImgPath(srcCommunity + community.getProfileImg())
+                    .profileImgPath(fileEncryptionService.decryptFile(new File(imageFilePath + "\\" + community.getProfileImg()), password))
                     .build();
             allCommunityResponseDTOS.add(allCommunityResponseDTO);
         }
@@ -66,7 +68,7 @@ public class CommunityService {
 
     }
 
-    public List<CommunityDTO.HomePageCommunityResponseDTO> getAllMyCommunity(UserDetails user) {
+    public List<CommunityDTO.HomePageCommunityResponseDTO> getAllMyCommunity(UserDetails user) throws IOException {
 
         Member member = memberRepository.findMemberByUsername(user.getUsername());
 
@@ -76,7 +78,7 @@ public class CommunityService {
             CommunityDTO.HomePageCommunityResponseDTO myCommunityResponseDTO = CommunityDTO.HomePageCommunityResponseDTO.builder()
                     .id(community.getId())
                     .name(community.getName())
-                    .profileImgPath(srcCommunity + community.getProfileImg())
+                    .profileImgPath(fileEncryptionService.decryptFile(new File(imageFilePath + "\\" + community.getProfileImg()), password))
                     .build();
             myCommunityResponseDTOS.add(myCommunityResponseDTO);
         }
@@ -84,7 +86,7 @@ public class CommunityService {
 
     }
 
-    public List<CommunityDTO.HomePageCommunityResponseDTO> getAllJoinCommunity(UserDetails user) {
+    public List<CommunityDTO.HomePageCommunityResponseDTO> getAllJoinCommunity(UserDetails user) throws IOException {
 
         Member member = memberRepository.findMemberByUsername(user.getUsername());
 
@@ -94,7 +96,7 @@ public class CommunityService {
             CommunityDTO.HomePageCommunityResponseDTO myCommunityResponseDTO = CommunityDTO.HomePageCommunityResponseDTO.builder()
                     .id(community.getId())
                     .name(community.getName())
-                    .profileImgPath(srcCommunity + community.getProfileImg())
+                    .profileImgPath(fileEncryptionService.decryptFile(new File(imageFilePath + "\\" + community.getProfileImg()), password))
                     .build();
             myCommunityResponseDTOS.add(myCommunityResponseDTO);
         }
@@ -162,17 +164,22 @@ public class CommunityService {
     }
 
     //커뮤니티 소개
-    public CommunityDTO.IntroResponseDTO getIntro(int communityId) {
+    public CommunityDTO.IntroResponseDTO getIntro(int communityId, UserDetails user) throws IOException {
+
+        Member member = memberRepository.findMemberByUsername(user.getUsername());
 
         Community community = communityRepository.findById(communityId);
+
+        boolean communityMember = communityMemberRepository.existsByCommunityAndMember(community, member);
+
         CommunityDTO.IntroResponseDTO introResponseDTO = CommunityDTO.IntroResponseDTO.builder()
                 .name(community.getName())
                 .createDate(community.getCreateDate().toLocalDate())
                 .rule(community.getRule())
-                .profileImgPath(srcCommunity + community.getProfileImg())
+                .profileImgPath(fileEncryptionService.decryptFile(new File(imageFilePath + "\\" + community.getProfileImg()), password))
                 .description(community.getDescription())
+                .communityMember(communityMember)
                 .build();
-        log.info("ffdf" + introResponseDTO.getProfileImgPath());
         return introResponseDTO;
 
     }

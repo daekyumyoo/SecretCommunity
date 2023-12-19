@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +36,7 @@ public class HomeController {
     }*/
 
     @GetMapping("/")
-    public String getList(@AuthenticationPrincipal UserDetails user, Model model) {
+    public String getList(@AuthenticationPrincipal UserDetails user, Model model) throws IOException {
         List<CommunityDTO.HomePageCommunityResponseDTO> allCommunityDTOs = communityService.getAllCommunity();
         model.addAttribute("allCommunityList", allCommunityDTOs);
         List<CommunityDTO.HomePageCommunityResponseDTO> myCommunityDTOs = communityService.getAllMyCommunity(user);
