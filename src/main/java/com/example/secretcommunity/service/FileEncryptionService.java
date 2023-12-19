@@ -8,6 +8,7 @@ import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
+import java.util.Base64;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -34,6 +35,8 @@ public class FileEncryptionService {
         try (InputStream inputStream = inputFile.getInputStream()) {
             byte[] fileBytes = inputStream.readAllBytes();
             salt = KeyGenerators.string().generateKey();
+            log.info("솔트 : " + salt);
+            log.info("솔트 : " + salt.getBytes());
             BytesEncryptor encryptor = Encryptors.standard(password, salt);
             byte[] encryptedBytes = encryptor.encrypt(fileBytes);
 
@@ -44,11 +47,24 @@ public class FileEncryptionService {
         }
     }
 
-    /*public byte[] decryptImage(byte[] encryptedImageBytes) throws IOException {
-        TextEncryptor textEncryptor = Encryptors.text(password, "deadbeef");
+    /*public byte[] decryptFile(Path encryptedFilePath) throws IOException {
 
-        byte[] decryptedImageBytes = textEncryptor.decrypt(new String(encryptedImageBytes)).getBytes();
-
-        return decryptedImageBytes;
+        byte[] encryptedBytes = Files.readAllBytes(encryptedFilePath);
+        TextEncryptor textEncryptor = Encryptors.text(password, salt);
+        return textEncryptor.decrypt(new String(encryptedBytes)).getBytes();
     }*/
+    public String decryptFile(File encryptedFile, String password) throws IOException {
+        try (InputStream inputStream = Files.newInputStream(encryptedFile.toPath())) {
+            // 처음 32바이트를 읽어와서 salt 값 추출
+            byte[] saltBytes = new byte[16];
+            inputStream.read(saltBytes);
+            String salt = new String(saltBytes);
+
+            // 나머지 부분을 읽어와서 복호화
+            byte[] encryptedBytes = inputStream.readAllBytes();
+            BytesEncryptor decryptor = Encryptors.standard(password, salt);
+            return Base64.getEncoder().encodeToString(decryptor.decrypt(encryptedBytes));
+        }
+    }
+
 }
