@@ -52,6 +52,7 @@ public class CommunityController {
 
             CommunityDTO.MainResponseDTO mainResponseDTO = communityService.getMain(communityId, user);
             model.addAttribute("mainData" ,mainResponseDTO);
+            model.addAttribute(communityId);
             return "community/main";
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());

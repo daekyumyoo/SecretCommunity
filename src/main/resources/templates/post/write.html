@@ -2,9 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 작성 폼</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <!-- Bootstrap File Input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.3/css/fileinput.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .file-input {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
-글작성
+<div class="form-container">
+    <h2 class="text-center">글 작성</h2>
+    <form action="/post/write-proc" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="boardId">게시판 종류:</label>
+            <select class="form-control select2" id="boardId" name="boardId" required>
+                <option th:each="board : ${boards}" th:text="${board.title}" th:value="${board.id}"></option>
+                <!-- 다른 게시판 종류를 추가할 수 있습니다. -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="title">제목:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용:</label>
+            <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">사진 첨부:</label>
+            <input type="file" class="file-input" id="image" name="image">
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">글 작성 완료</button>
+        </div>
+    </form>
+    <div class="text-center">
+        <a th:href="@{'/community/main/' + ${communityId}}" class="btn btn-danger">돌아가기</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js (Optional) -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<!-- Bootstrap File Input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.3/js/fileinput.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize Select2
+        $('.select2').select2();
+
+        // Initialize Bootstrap File Input
+        $('.file-input').fileinput({
+            theme: 'fas',
+            showUpload: false,
+            showRemove: false,
+            showCancel: false,
+            browseClass: 'btn btn-primary',
+        });
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

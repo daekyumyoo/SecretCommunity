@@ -9,4 +9,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findAllByBoardCommunityAndState(Community community, int state);
+
+    Post findById(int id);
 }
