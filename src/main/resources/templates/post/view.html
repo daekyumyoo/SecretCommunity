@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시판 상세 페이지</title>
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    div {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex; /* Use flexbox */
+      align-items: flex-start; /* Align items to the start (top) */
+    }
+
+    .text-content {
+      flex: 1; /* Take remaining space */
+      padding-right: 20px; /* Add some spacing between text and image */
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-btn, .back-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .comment-btn:hover, .back-btn:hover {
+      background-color: #2980b9;
+    }
+    .content-box {
+      position: absolute;
+      top: 200px;
+      width: 900px;
+    }
+    /*.text-content > p {*/
+    /*  margin-left: 100px;*/
+    /*}*/
+    .sss {
+      margin-left: 60%;
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <div class="text-content">
+    <h1 th:text="${viewData.title}">게시글 제목</h1>
+    <p class="sss" th:text="'작성일: ' + ${viewData.createDate}">작성일</p>
+    <p th:text="'조회수: ' + ${viewData.views}">조회수</p>
+
+
+  </div>
+  <div class="content-box">
+    <span class="content-box-span" th:text="${viewData.content}">게시글 내용</span>
+
+  </div>
+
+  <!-- 이미지를 표시하는 부분 -->
+  <img th:src="'data:image/jpeg;base64,' + ${viewData.imgPath}" alt="이미지">
+</div>
+<!-- 댓글 달기 버튼 -->
+<a th:href="@{'/post/comment/write/' + ${viewData.id}}" class="comment-btn">댓글 달기</a>
+
+<!-- 뒤로가기 버튼 -->
+<a th:href="@{/}" class="back-btn">뒤로 가기</a>
+</body>
+</html>

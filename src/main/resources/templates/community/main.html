@@ -119,9 +119,8 @@
         }
 
         /* 나가기 링크 스타일 추가 */
-        #exitButton {
-            margin-top: auto; /* 맨 아래로 위치하도록 설정 */
-            margin-bottom: 50px;
+         #sidebar > a{
+            margin-top: 10px; /* 맨 아래로 위치하도록 설정 */
             color: #fff;
             text-decoration: none;
             padding: 10px;
@@ -130,11 +129,18 @@
             transition: background-color 0.3s ease;
             display: block;
             text-align: center;
+             top: 629px;
+             position: relative;
+             width: 100px;
         }
+        #exitButton {
+            margin-bottom: 50px;
 
+        }
         #exitButton:hover {
             background-color: #777;
         }
+
     </style>
 </head>
 <body>
@@ -145,20 +151,24 @@
             <a th:href="@{'/board/' + ${boardDTO.id}}" th:text="${boardDTO.title}"></a>
         </li>
     </ul>
+    <a id="writeLink" th:href="@{'/post/write/' + ${communityId}}">글 작성</a>
+    <a id="mypageLink" th:href="@{'/mypage'}">마이페이지</a>
     <a id="exitButton" href="#">나가기</a>
 </div>
 
 <!-- 중앙에는 선택된 게시판의 글 목록 표시 -->
 <div id="content">
     <h2>전체 게시글</h2>
+
     <ul>
         <li th:each="postDTO : ${mainData.postDTOS}">
-            <a href="/post/write">
+            <a th:href="@{'/post/view/' + ${postDTO.id}}">
             <p class="post-title" th:text="${postDTO.title}"></p>
             <p class="post-meta">익명 | <span th:text="${postDTO.createDate}"></span> | 조회수: <span th:text="${postDTO.views}"></span></p>
             </a>
         </li>
     </ul>
+
 </div>
 
 <!-- 부트스트랩 JS 및 Popper.js 추가 -->
