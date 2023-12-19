@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>커뮤니티 정보</title>
-
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // 모델에서 받아온 값을 alert로 띄우기
+        var alertMessage = /*[[${errorMsg}]]*/ null;
+        if (alertMessage) {
+            alert(alertMessage);
+        }
+        /*]]>*/
+    </script>
     <!-- Bootstrap 스타일 시트 추가 -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
@@ -77,6 +85,7 @@
         }
 
         .back-button {
+            margin-left: 315px;
             display: inline-block;
             padding: 10px 20px;
             background-color: #6c757d;
@@ -90,10 +99,7 @@
             background-color: #495057;
         }
 
-        /* 버튼을 오른쪽으로 정렬 */
-        .button-container {
-            text-align: right;
-        }
+
     </style>
 </head>
 <body>
@@ -102,21 +108,26 @@
     <h1 th:text="${introData.getName()}"></h1>
     <p class="create-date">생성일: <span th:text="${introData.getCreateDate()}"></span></p>
     <p class="application-status" th:if="${introData.getRule() == 0}">
-        가입신청 상태: <span class="text-success">즉시가입</span>
+        가입형태: <span class="text-success">즉시</span>
     </p>
     <p class="application-status" th:if="${introData.getRule() == 1}">
-        가입신청 상태: <span class="text-warning">승인대기</span>
+        가입형태: <span class="text-warning">신청</span>
     </p>
     <p th:text="${introData.getDescription()}"></p>
 
     <!-- 버튼을 오른쪽으로 정렬한 컨테이너 -->
     <div class="button-container">
         <!-- 가입하기 버튼 -->
-        <a th:if="${introData.communityMember == true}" href="#" class="join-button">입장하기</a>
-        <a th:if="${introData.communityMember == false}" href="#" class="join-button">가입하기</a>
+        <span th:if="${introData.communityMember == true}">
+            <a th:href="@{'/community/main/' + ${introData.id}}" class="join-button">입장하기</a>
+        </span>
+        <span th:if="${introData.communityMember == false}">
+            <a th:if="${introData.getRule() == 0}" href="#" class="join-button">즉시가입</a>
+            <a th:if="${introData.getRule() == 1}" href="#" class="join-button">가입신청</a>
+        </span>
 
         <!-- 돌아가기 버튼 -->
-        <a href="#" class="back-button">돌아가기</a>
+        <a href="/home/" class="back-button">돌아가기</a>
     </div>
 </div>
 <!-- Bootstrap 스크립트 추가 -->

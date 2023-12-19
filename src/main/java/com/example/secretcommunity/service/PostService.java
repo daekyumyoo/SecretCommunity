@@ -1,6 +1,6 @@
 package com.example.secretcommunity.service;
 
-import com.example.secretcommunity.dto.CommunityDTO;
+import com.example.secretcommunity.dto.community.CommunityDTO;
 import com.example.secretcommunity.model.Community;
 import com.example.secretcommunity.persistence.CommunityRepository;
 import lombok.RequiredArgsConstructor;

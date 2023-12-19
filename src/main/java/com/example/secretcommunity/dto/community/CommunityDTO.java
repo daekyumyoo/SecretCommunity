@@ -1,5 +1,7 @@
-package com.example.secretcommunity.dto;
+package com.example.secretcommunity.dto.community;
 
+import com.example.secretcommunity.dto.board.BoardDTO;
+import com.example.secretcommunity.dto.post.PostDTO;
 import com.example.secretcommunity.model.Member;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -52,6 +55,8 @@ public class CommunityDTO {
     @Builder
     public static class IntroResponseDTO {
 
+        private int id;
+
         private String name;
 
         private LocalDate createDate;
@@ -63,6 +68,17 @@ public class CommunityDTO {
         private String description;
 
         private boolean communityMember;
+
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    public static class MainResponseDTO {
+
+        List<BoardDTO.MainResponseDTO> boardDTOS;
+
+        List<PostDTO.MainResponseDTO> postDTOS;
 
     }
 

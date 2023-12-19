@@ -1,17 +1,20 @@
 package com.example.secretcommunity.service;
 
-import com.example.secretcommunity.dto.CommunityDTO;
+import com.example.secretcommunity.dto.board.BoardDTO;
+import com.example.secretcommunity.dto.community.CommunityDTO;
+import com.example.secretcommunity.dto.post.PostDTO;
+import com.example.secretcommunity.model.Board;
 import com.example.secretcommunity.model.Community;
 import com.example.secretcommunity.model.Member;
-import com.example.secretcommunity.persistence.CommunityMemberRepository;
-import com.example.secretcommunity.persistence.CommunityRepository;
-import com.example.secretcommunity.persistence.MemberRepository;
+import com.example.secretcommunity.model.Post;
+import com.example.secretcommunity.persistence.*;
 import com.example.secretcommunity.util.MultipartUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -31,6 +34,10 @@ public class CommunityService {
 
     private final CommunityMemberRepository communityMemberRepository;
 
+    private final PostRepository postRepository;
+
+    private final BoardRepository boardRepository;
+
     private final FileEncryptionService fileEncryptionService;
 
     @Value("${file.path.community}")
@@ -41,9 +48,6 @@ public class CommunityService {
 
     @Value("${encryption.password}")
     private String password; // 암호화에 사용할 비밀번호
-
-    @Value("${encryption.salt}")
-    private String salt; // 암호화에 사용할 salt
 
     public File getImageDirectoryPath() {
         File file = new File(imageFilePath);
@@ -142,7 +146,7 @@ public class CommunityService {
             }
 
             // 이미지 저장 (파일명 : "강의 ID.확장자")
-            File newFile = MultipartUtils.saveImage(multipartFile, imageDirectoryPath, String.valueOf(id), password, salt);
+            File newFile = MultipartUtils.saveImage(multipartFile, imageDirectoryPath, String.valueOf(id), password);
 
             return newFile;
         }catch(Exception e){
@@ -170,9 +174,10 @@ public class CommunityService {
 
         Community community = communityRepository.findById(communityId);
 
-        boolean communityMember = communityMemberRepository.existsByCommunityAndMember(community, member);
+        boolean communityMember = communityMemberRepository.existsByCommunityAndMember(community, member) || communityRepository.existsByCreaterAndId(member, communityId);
 
         CommunityDTO.IntroResponseDTO introResponseDTO = CommunityDTO.IntroResponseDTO.builder()
+                .id(community.getId())
                 .name(community.getName())
                 .createDate(community.getCreateDate().toLocalDate())
                 .rule(community.getRule())
@@ -185,4 +190,43 @@ public class CommunityService {
     }
 
 
+    public CommunityDTO.MainResponseDTO getMain(int communityId, UserDetails user) {
+
+        Member member = memberRepository.findMemberByUsername(user.getUsername());
+
+        Community community = communityRepository.findById(communityId);
+
+        boolean communityMember = communityMemberRepository.existsByCommunityAndMember(community, member) || communityRepository.existsByCreaterAndId(member, communityId);
+
+        if (!communityMember) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+
+        List<PostDTO.MainResponseDTO> postDTOs = new ArrayList<>();
+        List<Post> posts = postRepository.findAllByBoardCommunityAndState(community, PostDTO.State.ACTIVE);
+
+        for (Post post : posts) {
+            PostDTO.MainResponseDTO postDTO = PostDTO.MainResponseDTO.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .createDate(post.getCreateDate())
+                    .views(post.getViews())
+                    .build();
+            postDTOs.add(postDTO);
+        }
+
+        List<BoardDTO.MainResponseDTO> boardDTOs = new ArrayList<>();
+        List<Board> boards = boardRepository.findAllByCommunityAndState(community, BoardDTO.State.ACTIVE);
+
+        for (Board board : boards) {
+            BoardDTO.MainResponseDTO boardDTO = BoardDTO.MainResponseDTO.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .build();
+            boardDTOs.add(boardDTO);
+        }
+
+        return new CommunityDTO.MainResponseDTO(boardDTOs, postDTOs);
+
+    }
 }

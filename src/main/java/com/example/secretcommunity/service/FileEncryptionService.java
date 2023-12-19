@@ -24,19 +24,11 @@ import java.nio.file.StandardOpenOption;
 @RequiredArgsConstructor
 public class FileEncryptionService {
 
-  /*  @Value("${encryption.password}")
-    private String password; // 암호화에 사용할 비밀번호
-
-    @Value("${encryption.salt}")
-    private String salt; // 암호화에 사용할 salt
-*/
-    public void encryptFile(MultipartFile inputFile, File outputFile, String password, String salt) throws IOException {
+    public void encryptFile(MultipartFile inputFile, File outputFile, String password) throws IOException {
 
         try (InputStream inputStream = inputFile.getInputStream()) {
             byte[] fileBytes = inputStream.readAllBytes();
-            salt = KeyGenerators.string().generateKey();
-            log.info("솔트 : " + salt);
-            log.info("솔트 : " + salt.getBytes());
+            String salt = KeyGenerators.string().generateKey();
             BytesEncryptor encryptor = Encryptors.standard(password, salt);
             byte[] encryptedBytes = encryptor.encrypt(fileBytes);
 
@@ -47,12 +39,6 @@ public class FileEncryptionService {
         }
     }
 
-    /*public byte[] decryptFile(Path encryptedFilePath) throws IOException {
-
-        byte[] encryptedBytes = Files.readAllBytes(encryptedFilePath);
-        TextEncryptor textEncryptor = Encryptors.text(password, salt);
-        return textEncryptor.decrypt(new String(encryptedBytes)).getBytes();
-    }*/
     public String decryptFile(File encryptedFile, String password) throws IOException {
         try (InputStream inputStream = Files.newInputStream(encryptedFile.toPath())) {
             // 처음 32바이트를 읽어와서 salt 값 추출

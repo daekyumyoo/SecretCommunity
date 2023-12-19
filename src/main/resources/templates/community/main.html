@@ -1,0 +1,167 @@
+<!-- src/main/resources/templates/board.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 페이지</title>
+
+    <!-- 부트스트랩 CSS 추가 -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+
+        #sidebar {
+            background-color: #333;
+            color: #fff;
+            width: 200px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sidebar li {
+            margin-bottom: 10px;
+        }
+
+        #sidebar a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            padding: 10px;
+            background-color: #555;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #sidebar a:hover {
+            background-color: #777;
+        }
+
+        #content {
+            flex: 1;
+            margin-left: 220px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            overflow-y: auto; /* 스크롤이 필요한 경우만 스크롤이 나타남 */
+        }
+
+        #content h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        #content li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            /* 부트스트랩 클래스 추가 */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #content li:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #content li p {
+            margin: 0;
+            color: #333;
+        }
+
+        /* 부트스트랩 클래스 추가 */
+        .post-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        /* 나가기 링크 스타일 추가 */
+        #exitButton {
+            margin-top: auto; /* 맨 아래로 위치하도록 설정 */
+            margin-bottom: 50px;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #555;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: block;
+            text-align: center;
+        }
+
+        #exitButton:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+<!-- 왼쪽 사이드바에 선택된 게시판 강조 표시 -->
+<div id="sidebar">
+    <ul>
+        <li th:each="boardDTO : ${mainData.boardDTOS}">
+            <a th:href="@{'/board/' + ${boardDTO.id}}" th:text="${boardDTO.title}"></a>
+        </li>
+    </ul>
+    <a id="exitButton" href="#">나가기</a>
+</div>
+
+<!-- 중앙에는 선택된 게시판의 글 목록 표시 -->
+<div id="content">
+    <h2>전체 게시글</h2>
+    <ul>
+        <li th:each="postDTO : ${mainData.postDTOS}">
+            <a href="/post/write">
+            <p class="post-title" th:text="${postDTO.title}"></p>
+            <p class="post-meta">익명 | <span th:text="${postDTO.createDate}"></span> | 조회수: <span th:text="${postDTO.views}"></span></p>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- 부트스트랩 JS 및 Popper.js 추가 -->
+<script src="/webjars/bootstrap/5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

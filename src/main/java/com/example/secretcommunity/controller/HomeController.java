@@ -1,6 +1,6 @@
 package com.example.secretcommunity.controller;
 
-import com.example.secretcommunity.dto.CommunityDTO;
+import com.example.secretcommunity.dto.community.CommunityDTO;
 import com.example.secretcommunity.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;

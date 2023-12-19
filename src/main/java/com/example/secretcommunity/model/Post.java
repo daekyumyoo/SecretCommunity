@@ -47,4 +47,7 @@ public class Post {
     @Column(name = "views")
     private int views;
 
+    @Column(name = "img_path")
+    private String imgPath;
+
 }
