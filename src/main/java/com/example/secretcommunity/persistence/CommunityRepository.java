@@ -18,4 +18,6 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
     Community findById(int id);
 
+    boolean existsByCreaterAndId(Member creater, int id);
+
 }
